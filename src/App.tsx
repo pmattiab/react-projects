@@ -1,25 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import Axios  from 'axios';
+import { ToDoHeader } from './components/ToDoHeader';
+import { ToDo, ToDoItem } from './components/ToDo';
+import { Container, Row } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
 import './App.css';
 
 function App() {
+
+  const [items, setItems] = useState<ToDoItem[]>([]);
+
+  useEffect(() => {
+
+    Axios.get<ToDoItem[]>("http://localhost:3001/todos").then(res => { setItems(res.data); console.log("carico lista dei todo"); });
+
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+
+      <ToDoHeader />
+
+      <Row>
+        <div className="col-2"></div>
+        <div className="col">
+            <ToDo items={items.filter(item => !item.completed)} />
+          </div>
+
+          <div className="col-1"></div>
+
+          <div className="col">
+            <ToDo items={items.filter(item => item.completed)} />
+          </div>
+          <div className="col-2"></div>
+      </Row>
+
+    </Container>
   );
 }
 

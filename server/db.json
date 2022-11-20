@@ -1,0 +1,24 @@
+{
+  "todos": [
+    {
+      "id": "33c58def-248e-e33e-27fc-5083814fa298",
+      "name": "lavorare",
+      "completed": false
+    },
+    {
+      "id": "d7ebfeee-5dde-abfa-b7fb-7de5eeb5a235",
+      "name": "mangiare",
+      "completed": true
+    },
+    {
+      "id": "9a308b3d-adc4-c63c-693d-b5956ae7c0d2",
+      "name": "fare spesa",
+      "completed": true
+    },
+    {
+      "id": "e8fa3040-db3d-a057-64db-e4e4fc29c3bf",
+      "name": "pulire casa",
+      "completed": false
+    }
+  ]
+}
