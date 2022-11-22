@@ -25,13 +25,14 @@ export const ToDoInput : React.FC<ToDoInputProps> = (props) => {
     const [todoCheck, setTodoCheck] = useState(false);
 
     const addItemToList = (todoName : string) => {
+        
         if (todoName.length > 0){
             item.name = todoName;
             item.completed = todoCheck;
             addItem(item);
-            props.onAddToDo(item);
         }
 
+        props.onAddToDo(item);
         setTodo("");
         setTodoCheck(false);
     }
