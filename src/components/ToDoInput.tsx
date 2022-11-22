@@ -13,19 +13,20 @@ interface ToDoInputProps {
 
 export const ToDoInput : React.FC<ToDoInputProps> = (props) => {
 
-    const addItem = (item : ToDoItem) => { Axios.post<ToDoItem[]>("http://localhost:3001/todos", item).then(res => { }) }
-
-    const item : ToDoItem = {
-        id: uuid(),
+    let item : ToDoItem = {
+        id: "",
         name: "",
         completed: false
     };
+
+    const addItem = (item : ToDoItem) => { Axios.post<ToDoItem[]>("http://localhost:3001/todos", item).then(res => { }) }
     
-    const [todo, setTodo] = useState(item.name);
+    const [todo, setTodo] = useState("");
     const [todoCheck, setTodoCheck] = useState(false);
 
     const addItemToList = (todoName : string) => {
-        if (todoName.length > 0){
+        if (todoName.length > 0) {
+            item.id = uuid();
             item.name = todoName;
             item.completed = todoCheck;
             addItem(item);
