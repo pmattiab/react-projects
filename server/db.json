@@ -19,6 +19,21 @@
       "id": "e8fa3040-db3d-a057-64db-e4e4fc29c3bf",
       "name": "pulire casa",
       "completed": false
+    },
+    {
+      "id": "f0bede5e-3988-3849-f71a-a5b5e340b139",
+      "name": "imparare react",
+      "completed": false
+    },
+    {
+      "id": "286db6cf-b4b1-892b-3094-71c878f152a8",
+      "name": "riordinare l'armadio",
+      "completed": true
+    },
+    {
+      "id": "2f10c1c0-4feb-d0c8-a21a-d6d4b8977d8e",
+      "name": "fare word cloud",
+      "completed": true
     }
   ]
 }

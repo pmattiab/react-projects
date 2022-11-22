@@ -1,7 +1,7 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import Axios  from 'axios';
 import cn from "classnames";
-import { confirmAlert } from 'react-confirm-alert';
+// import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
@@ -13,28 +13,21 @@ export interface ToDoItem {
 }
 
 interface TodoProps {
-    items: ToDoItem[]
-}
-
-const toggleStatus = (item : ToDoItem) => {
-    
-    item.completed = !item.completed;
-
-    Axios.put<ToDoItem>(`http://localhost:3001/todos/${item.id}`, item).then(res => {
-        console.log("toggle su " + item.name);
-    });
-}
-
-const deleteItem = (item : ToDoItem) => {
-
-    Axios.delete<ToDoItem>(`http://localhost:3001/todos/${item.id}`).then(res => {
-        console.log("eimino " + item.name);
-    });
+    items: ToDoItem[],
+    changeList: (item : ToDoItem) => void
 }
 
 export const ToDo : React.FC<TodoProps> = (props) => {
 
+    const deleteItem = (item : ToDoItem) => { Axios.delete<ToDoItem>(`http://localhost:3001/todos/${item.id}`).then(res => { props.changeList(item) }); }
+
+    const toggleStatus = (item : ToDoItem) => {
+        item.completed = !item.completed;
+        Axios.put<ToDoItem>(`http://localhost:3001/todos/${item.id}`, item).then(res => { props.changeList(res.data) });
+    }
+
     return (
+
         <Fragment>
             <ul>
                 {

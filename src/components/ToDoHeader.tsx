@@ -1,10 +1,15 @@
-import React, { Fragment, HtmlHTMLAttributes, useState } from "react";
+import React, { Fragment } from "react";
 import { ToDoInput } from "./ToDoInput";
 import { Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { ToDoItem } from "./ToDo";
 
-export const ToDoHeader : React.FC = (props) => {
+interface ToDoHeaderProps {
+    onAddToDo: (item : ToDoItem) => void
+}
+
+export const ToDoHeader : React.FC<ToDoHeaderProps> = (props) => {
 
     return (
         <Fragment>
@@ -13,7 +18,7 @@ export const ToDoHeader : React.FC = (props) => {
                     <h1>ToDo List</h1>
                 </div>
             </Row>
-            <ToDoInput/>
+            <ToDoInput onAddToDo={(item) => props.onAddToDo(item)} />
             <Row>
                 <div className="col-2"></div>
                 <div className="col text-center mb-3">

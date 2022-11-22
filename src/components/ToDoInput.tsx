@@ -1,39 +1,69 @@
-import React, { FormEvent, Fragment, HtmlHTMLAttributes, useState } from "react";
+import React, { Fragment, useState } from "react";
 import Axios from "axios";
+import cn from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Row } from "react-bootstrap";
 import { ToDoItem } from "./ToDo";
 import uuid from 'react-uuid';
 
-const item : ToDoItem = {
-    id: uuid(),
-    name: "nuovo",
-    completed: false
-};
-
-const handleSubmit = (event : FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    Axios.post<ToDoItem[]>("http://localhost:3001/todos", item).then(res => { console.log(res); });
-    console.log(event.target);
-    console.log("todo aggiunto");
+interface ToDoInputProps {
+    onAddToDo: (item : ToDoItem) => void
 }
 
-export const ToDoInput : React.FC = (props) => {
+export const ToDoInput : React.FC<ToDoInputProps> = (props) => {
+
+    const addItem = (item : ToDoItem) => { Axios.post<ToDoItem[]>("http://localhost:3001/todos", item).then(res => { }) }
+
+    const item : ToDoItem = {
+        id: uuid(),
+        name: "",
+        completed: false
+    };
+    
+    const [todo, setTodo] = useState(item.name);
+    const [todoCheck, setTodoCheck] = useState(false);
+
+    const addItemToList = (todoName : string) => {
+        if (todoName.length > 0){
+            item.name = todoName;
+            item.completed = todoCheck;
+            addItem(item);
+            props.onAddToDo(item);
+        }
+
+        setTodo("");
+        setTodoCheck(false);
+    }
+
+    const changeToDoInputCheck = () => { setTodoCheck(!todoCheck) }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => { if (e.key === 'Enter') { addItemToList(todo) } }
+
+    const addTodo = (e : React.MouseEvent<HTMLButtonElement>) => { e.preventDefault(); addItemToList(todo) }
 
     return (
         <Fragment>
-                <Row className="mb-5">
-                    <div className="col-4"></div>
-                    <div className="col-4">
-                        <form onSubmit={handleSubmit}>
-                            <input className="form-control d-inline-block w-75" type="text" placeholder="Inserisci un nuovo todo" name="name"/>
-                            <button type="submit" value="Submit" className="btn btn-primary btn-sm ml-10px mb-1">
-                                <FontAwesomeIcon icon={faPlus} className="mr-5px"/>Aggiungi
-                            </button>
-                        </form>
-                    </div>
-                </Row>
+            <Row className="mb-5 justify-content-center align-items-center">
+                <div className="input-cont position-relative">
+                    <input type="text"
+                        className="form-control"
+                        placeholder="Inserisci un nuovo todo"
+                        value={todo}
+                        onKeyDown={(e) => handleKeyDown(e)}
+                        onChange={(e) => setTodo(e.currentTarget.value)}
+                    />
+                    <label
+                        htmlFor="item-check"
+                        className={cn("badge-complete badge " + (todoCheck ? "text-bg-success" : "text-bg-unsuccess"))}>
+                        {todoCheck ? "Completato" : "Da completare"}
+                    </label>
+                    <input type="checkbox" className="d-none" id="item-check" checked={todoCheck} onChange={() => changeToDoInputCheck()} />
+                </div>
+                <button onClick={addTodo} className="btn-add btn btn-primary btn-sm">
+                    <FontAwesomeIcon icon={faPlus} className="mr-5px"/>Aggiungi
+                </button>
+            </Row>
         </Fragment>
     )
 }

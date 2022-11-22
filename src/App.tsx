@@ -11,27 +11,28 @@ function App() {
 
   const [items, setItems] = useState<ToDoItem[]>([]);
 
-  useEffect(() => {
+  useEffect(() => { getList() }, []);
 
-    Axios.get<ToDoItem[]>("http://localhost:3001/todos").then(res => { setItems(res.data); console.log("carico lista dei todo"); });
+  const getList = () => { Axios.get<ToDoItem[]>("http://localhost:3001/todos").then(res => { setItems(res.data); console.log("render list") }); };
 
-  }, []);
+  const onChangeList = (item : ToDoItem) => { if (item) { getList() } };
 
   return (
+
     <Container>
 
-      <ToDoHeader />
+      <ToDoHeader onAddToDo={getList} />
 
       <Row>
         <div className="col-2"></div>
         <div className="col">
-            <ToDo items={items.filter(item => !item.completed)} />
+            <ToDo items={items.filter(item => !item.completed)} changeList={(item) => onChangeList(item)} />
           </div>
 
           <div className="col-1"></div>
 
           <div className="col">
-            <ToDo items={items.filter(item => item.completed)} />
+            <ToDo items={items.filter(item => item.completed)} changeList={(item) => onChangeList(item)} />
           </div>
           <div className="col-2"></div>
       </Row>
