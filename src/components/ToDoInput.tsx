@@ -25,13 +25,8 @@ export const ToDoInput : React.FC<ToDoInputProps> = (props) => {
     const [todoCheck, setTodoCheck] = useState(false);
 
     const addItemToList = (todoName : string) => {
-<<<<<<< HEAD
         if (todoName.length > 0) {
             item.id = uuid();
-=======
-        
-        if (todoName.length > 0){
->>>>>>> origin/master
             item.name = todoName;
             item.completed = todoCheck;
             addItem(item);
